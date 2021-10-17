@@ -6,10 +6,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import createEmotionCache from 'src/util/createEmotionCache';
 import { createTheme, useMediaQuery } from '@mui/material';
-//
+import 'src/styles/styles.scss';
+// fullcalendar css
 import '@fullcalendar/common/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
+import Layout from 'src/components/layout/Layout';
+import { useRouter } from 'next/router';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -28,6 +31,8 @@ export default function MyApp(props) {
     [prefersDarkMode],
   );
 
+  const router = useRouter();
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -37,7 +42,15 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        {
+          router.asPath.includes('cadastro') || router.asPath.includes('login')  ?
+            <Component {...pageProps} /> :
+          (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )
+        }
       </ThemeProvider>
     </CacheProvider>
   );

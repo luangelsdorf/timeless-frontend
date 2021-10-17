@@ -23,7 +23,8 @@
     "next-transpile-modules": "^8.0.0",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "sass": "^1.43.2"
   },
   "scripts": {
     "dev": "next",
