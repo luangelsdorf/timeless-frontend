@@ -13,12 +13,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Category, TaskAlt } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
 function Layout(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const router = useRouter();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -29,13 +31,13 @@ function Layout(props) {
       <Toolbar />
       <Divider />
       <List>
-        <ListItem button>
+        <ListItem button onClick={() => router.push('/tarefas')}>
           <ListItemIcon>
             <TaskAlt />
           </ListItemIcon>
           <ListItemText primary="Tarefas" />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => router.push('/categorias')}>
           <ListItemIcon>
             <Category />
           </ListItemIcon>

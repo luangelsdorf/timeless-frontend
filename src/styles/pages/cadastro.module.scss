@@ -1,0 +1,32 @@
+@import '../scss/mixins';
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  margin: auto;
+
+  form {
+    padding: 25px;
+    background-color: lighten($color: #121212, $amount: 10%);
+    margin-top: 15px;
+
+    & > * {
+      margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  @include xl() {
+    width: 50%;
+  }
+
+  @include md() {
+    width: 90%;
+  }
+}
