@@ -8,6 +8,10 @@
   width: 25%;
   margin: auto;
 
+  h1 {
+    text-align: center;
+  }
+
   form {
     padding: 25px;
     background-color: lighten($color: #121212, $amount: 10%);

@@ -15,8 +15,8 @@ export default function handleRegister(data) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: user,
-          password: pass
+          username: data.username,
+          password: data.password
         })
       })
         .then(res => res.json())
@@ -25,4 +25,5 @@ export default function handleRegister(data) {
           console.log(createdUser);
         })
     })
+    console.log(data);
 }
