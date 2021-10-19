@@ -21,9 +21,10 @@ export default function handleRegister(data) {
       })
         .then(res => res.json())
         .then(ponse => {
-          setCreatedUser(ponse);
-          console.log(createdUser);
+          console.log(ponse);
         })
     })
-    console.log(data);
+    .catch(() => {
+      console.log('Ocorreu um erro.');
+    })
 }

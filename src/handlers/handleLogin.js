@@ -10,4 +10,8 @@ export default function handleLogin(data) {
       password: data.password
     })
   })
+  .then(res => res.json())
+  .then(ponse => {
+    console.log(ponse);
+  })
 }

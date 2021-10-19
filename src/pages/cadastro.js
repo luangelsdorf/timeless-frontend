@@ -21,7 +21,7 @@ export default function Home() {
     const data = {
       username: user,
       email: email,
-      nickname: nick,
+      displayName: nick,
       password: pass,
       confirmationPassword: confPass,
     }
