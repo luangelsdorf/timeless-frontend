@@ -6,6 +6,7 @@ import { Button, Typography } from '@mui/material';
 import Link from 'src/components/common/Link';
 import handleRegister from 'src/handlers/handleRegister';
 import styles from 'src/styles/pages/cadastro.module.scss';
+import PassWordToggle from 'src/components/common/PassWordToggle';
 
 export default function Home() {
   const [user, setUser] = useState('');

@@ -1,7 +1,12 @@
 import React from 'react';
+import Head from 'next/head';
 
 export default function Categorias() {
   return (
-    <div>asd</div>
+    <>
+      <Head>
+        <title>TimeLess - </title>
+      </Head>
+    </>
   )
 }

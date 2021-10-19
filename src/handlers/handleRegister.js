@@ -8,7 +8,7 @@ export default function handleRegister(data) {
     body: JSON.stringify(data)
   })
     .then(() => {
-      fetch('http://168.232.7.161/v1/user/login', {
+      fetch('http://168.232.7.161/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain',

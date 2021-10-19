@@ -14,6 +14,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Category, TaskAlt } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import styles from 'src/styles/pages/layout.module.scss';
+import { Button } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -60,18 +62,25 @@ function Layout(props) {
         }}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            TimeLess
-          </Typography>
+          <div className={styles.bar}>
+            <div>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap component="div">
+                TimeLess
+              </Typography>
+            </div>
+            <Button>
+              Sair
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       <Box
