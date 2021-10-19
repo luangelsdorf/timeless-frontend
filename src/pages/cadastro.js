@@ -14,6 +14,9 @@ export default function Home() {
   const [pass, setPass] = useState('');
   const [confPass, setConfPass] = useState('');
   const [createdUser, setCreatedUser] = useState({});
+  const [showPass, setShowPass] = useState(false)
+
+  const handleShowPass = () => setShowPass(!showPass);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -42,8 +45,8 @@ export default function Home() {
             <TextField variant="standard" size="small" margin="dense" fullWidth required id="user" label="Nome de Usuário" onChange={e => setUser(e.target.value)} />
             <TextField variant="standard" size="small" margin="dense" fullWidth required id="email" label="Endereço de e-mail" type="email" onChange={e => setEmail(e.target.value)} />
             <TextField variant="standard" size="small" margin="dense" fullWidth required id="displayName" label="Apelido" onChange={e => setNick(e.target.value)} />
-            <TextField variant="standard" size="small" margin="dense" fullWidth required id="pass" label="Senha" type="password" onChange={e => setPass(e.target.value)} />
-            <TextField variant="standard" size="small" margin="dense" fullWidth required id="confirmPass" label="Confirme sua senha" type="password" onChange={e => setConfPass(e.target.value)} />
+            <PassWordToggle handleShowPass={handleShowPass} showPass={showPass} onChange={e => setPass(e.target.value)} id="pass" />
+            <PassWordToggle handleShowPass={handleShowPass} showPass={showPass} onChange={e => setConfPass(e.target.value)} id="confPass" />
             <Button variant="contained" type="submit">Criar conta!</Button>
           </form>
 
