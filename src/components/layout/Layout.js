@@ -12,10 +12,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Category, TaskAlt } from '@mui/icons-material';
+import { Category, Logout, TaskAlt } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import styles from 'src/styles/pages/layout.module.scss';
 import { Button } from '@mui/material';
+import handleLogout from 'src/handlers/handleLogout';
 
 const drawerWidth = 240;
 
@@ -77,8 +78,9 @@ function Layout(props) {
                 TimeLess
               </Typography>
             </div>
-            <Button>
-              Sair
+            <Button onClick={handleLogout}>
+              <Logout sx={{mr: 1,}} />
+              <Typography>Sair</Typography>
             </Button>
           </div>
         </Toolbar>

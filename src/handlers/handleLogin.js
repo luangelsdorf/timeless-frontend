@@ -10,5 +10,7 @@ export default function handleLogin(data) {
       password: data.password
     })
   })
-  .then(res => console.log(res.headers.get('Authorization')));
+  .then(res => {
+    window.localStorage.setItem('token', res.headers.get('Authorization'));
+  });
 }
