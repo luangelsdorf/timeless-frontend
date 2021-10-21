@@ -24,7 +24,8 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "sass": "^1.43.2"
+    "sass": "^1.43.2",
+    "swr": "^1.0.1"
   },
   "scripts": {
     "dev": "next",

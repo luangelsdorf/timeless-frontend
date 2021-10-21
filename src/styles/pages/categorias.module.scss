@@ -8,25 +8,6 @@
   }
 }
 
-.item {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  margin-left: 1.8rem !important;
-  font-weight: 400 !important;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: -1.8rem;
-
-    width: 0.9rem;
-    height: 0.9rem;
-    border-radius: 50%;
-    background-color: lightcoral;
-  }
-}
-
 .fab {
   position: absolute !important;
   bottom: 35px;

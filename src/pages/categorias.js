@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import styles from 'src/styles/pages/categorias.module.scss';
 import Paper from '@mui/material/Paper';
-import { Collapse, Fab, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Collapse, Fab, IconButton, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Add, Delete, Edit } from '@mui/icons-material';
+import CategoryItem from 'src/components/category/CategoryItem';
 
 export default function Categorias() {
   const [show, setShow] = useState(false)
@@ -48,23 +49,32 @@ export default function Categorias() {
       </section> */}
 
       <section className={styles.section}>
+        <h1>Categorias</h1>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead>
+            {/* <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
                 <TableCell>Cor</TableCell>
                 <TableCell>Ações</TableCell>
               </TableRow>
-            </TableHead>
+            </TableHead> */}
             <TableBody>
               {
                 rows.map((row) => {
                   return (
-                    <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell component="th" scope="row">{row.name}</TableCell>
-                      <TableCell>{row.color}</TableCell>
-                      <TableCell>{row.actions}</TableCell>
+                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell className={styles.item} component="th" scope="row">
+                        <CategoryItem color={row.color}>{row.name}</CategoryItem>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton>
+                          <Edit />
+                        </IconButton>
+                        <IconButton>
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   )
                 })
