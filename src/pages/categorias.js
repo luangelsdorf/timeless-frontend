@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import styles from 'src/styles/pages/categorias.module.scss';
 import Paper from '@mui/material/Paper';
-import { Collapse, Fab, IconButton, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Add, Delete, Edit } from '@mui/icons-material';
+import { Button, Collapse, Fab, IconButton, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Add, Delete, DeleteOutlined, Edit, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
 
 export default function Categorias() {
@@ -61,18 +61,21 @@ export default function Categorias() {
             </TableHead> */}
             <TableBody>
               {
-                rows.map((row) => {
+                rows.map((row, index) => {
                   return (
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell className={styles.item} component="th" scope="row">
                         <CategoryItem color={row.color}>{row.name}</CategoryItem>
                       </TableCell>
-                      <TableCell>
-                        <IconButton>
-                          <Edit />
+                      <TableCell align="right">
+                        <IconButton color="primary">
+                          <EditOutlined />
                         </IconButton>
-                        <IconButton>
-                          <Delete />
+                        <IconButton color="primary">
+                          <DeleteOutlined />
+                        </IconButton>
+                        <IconButton color="primary">
+                          <VisibilityOutlined />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -85,7 +88,7 @@ export default function Categorias() {
         <Collapse in={show}>
           <Typography variant="h3">Ola</Typography>
         </Collapse>
-        <Fab onClick={handleClick} className={styles.fab} color="primary" aria-label="add">
+        <Fab onClick={handleClick} className={styles.fab} color="secondary" aria-label="add">
           <Add />
         </Fab>
       </section>

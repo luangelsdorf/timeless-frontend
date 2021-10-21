@@ -8,9 +8,6 @@ import createEmotionCache from 'src/util/createEmotionCache';
 import { createTheme, useMediaQuery } from '@mui/material';
 import 'src/styles/styles.scss';
 // fullcalendar css
-import '@fullcalendar/common/main.css';
-import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/timegrid/main.css';
 import Layout from 'src/components/layout/Layout';
 import { useRouter } from 'next/router';
 
