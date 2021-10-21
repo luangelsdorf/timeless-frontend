@@ -78,9 +78,8 @@ function Layout(props) {
                 TimeLess
               </Typography>
             </div>
-            <Button onClick={handleLogout}>
-              <Logout sx={{mr: 1,}} />
-              <Typography>Sair</Typography>
+            <Button onClick={handleLogout} startIcon={<Logout />}>
+              Sair
             </Button>
           </div>
         </Toolbar>
