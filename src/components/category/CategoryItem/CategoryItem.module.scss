@@ -4,14 +4,13 @@
   align-items: center;
   margin-left: 1.8rem !important;
   font-weight: 400 !important;
+}
 
-  span {
-    position: absolute;
-    left: -1.8rem;
+.color {
+  position: absolute;
+  left: -1.8rem;
 
-    width: 0.9rem;
-    height: 0.9rem;
-    border-radius: 50%;
-    background-color: lightcoral;
-  }
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
 }

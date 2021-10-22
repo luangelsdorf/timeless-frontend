@@ -1,11 +1,14 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import styles from './CategoryItem.module.scss';
 
-export default function CategoryItem({children, color}) {
+export default function CategoryItem({ children, color }) {
   return (
     <div className={styles.item}>
-      <span style={{backgroundColor: color}} />
-      { children }
+      <Button color="inherit">
+        <span className={styles.color} style={{ backgroundColor: color }} />
+        {children}
+      </Button>
     </div>
   )
 }

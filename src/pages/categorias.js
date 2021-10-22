@@ -2,23 +2,24 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import styles from 'src/styles/pages/categorias.module.scss';
 import Paper from '@mui/material/Paper';
-import { Button, Collapse, Fab, IconButton, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Add, Delete, DeleteOutlined, Edit, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
+import { Fab, IconButton, Table, TableBody, TableCell, TableContainer,TableRow } from '@mui/material';
+import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
+import AddDialog from 'src/components/category/dialogs/AddDialog';
 
 export default function Categorias() {
-  const [show, setShow] = useState(false)
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   function createData(name, color, actions) {
     return { name, color, actions };
   }
 
   const rows = [
-    createData('Lazer', '#aa751b', 'asdads'),
-    createData('Trabalho', '#facada', 'asdads'),
-    createData('Escola', '#df8b52', 'asdads'),
-    createData('Etc', '#ffde87', 'asdads'),
-    createData('Asd', '#0a0a0a', 'asdads'),
+    createData('Lazer', '#aa751b',),
+    createData('Trabalho', '#facada',),
+    createData('Escola', '#df8b52',),
+    createData('Um', '#ffde87',),
+    createData('Dois', '#0a0a0a',),
   ];
 
   const fabStyle = {
@@ -27,8 +28,16 @@ export default function Categorias() {
     right: '0px',
   }
 
-  function handleClick() {
+  function toggleAdd() {
     setShow(!show);
+  }
+
+  function openAdd() {
+    setIsAddOpen(true);
+  }
+
+  function closeAdd() {
+    setIsAddOpen(false)
   }
 
   return (
@@ -37,28 +46,12 @@ export default function Categorias() {
         <title>TimeLess - Categorias</title>
       </Head>
 
-      {/* <section className={styles.section}>
-        <List>
-          <ListItem button>
-            <Typography variant="h6" className={styles.item}>Trabalho</Typography>
-          </ListItem>
-          <ListItem button>
-            <Typography variant="h6" className={styles.item}>Lazer</Typography>
-          </ListItem>
-        </List>
-      </section> */}
+      <AddDialog role="add" open={isAddOpen} handleClose={closeAdd} />
 
       <section className={styles.section}>
         <h1>Categorias</h1>
         <TableContainer component={Paper}>
           <Table>
-            {/* <TableHead>
-              <TableRow>
-                <TableCell>Nome</TableCell>
-                <TableCell>Cor</TableCell>
-                <TableCell>Ações</TableCell>
-              </TableRow>
-            </TableHead> */}
             <TableBody>
               {
                 rows.map((row, index) => {
@@ -85,10 +78,7 @@ export default function Categorias() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Collapse in={show}>
-          <Typography variant="h3">Ola</Typography>
-        </Collapse>
-        <Fab onClick={handleClick} className={styles.fab} color="secondary" aria-label="add">
+        <Fab onClick={openAdd} className={styles.fab} color="secondary" aria-label="add">
           <Add />
         </Fab>
       </section>
