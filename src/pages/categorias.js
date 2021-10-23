@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import { Fab, IconButton, Table, TableBody, TableCell, TableContainer,TableRow } from '@mui/material';
 import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
-import AddDialog from 'src/components/category/dialogs/AddDialog';
+import MainDialog from 'src/components/category/dialogs/MainDialog';
 
 export default function Categorias() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -39,8 +39,8 @@ export default function Categorias() {
         <title>TimeLess - Categorias</title>
       </Head>
 
-      <AddDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
-      <AddDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
+      <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
+      <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
 
       <section className={styles.section}>
         <h1>Categorias</h1>

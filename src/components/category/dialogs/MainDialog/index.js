@@ -5,16 +5,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import styles from './AddDialog.module.scss';
+import styles from './MainDialog.module.scss';
 
-export default function AddDialog(props) {
+export default function MainDialog(props) {
   const [color, setColor] = useState('#708090');
   const [name, setName] = useState('');
   console.info(`%cState: ${name}, ${color}`, 'color: lightblue');
 
   if (props.data) console.log(props.data);
-
-  let title = props.role === 'add' ? 'Nova categoria' : 'Editar categoria';
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +29,7 @@ export default function AddDialog(props) {
   }, [props.open])
 
   return (
-    <div className={styles.addDialog}>
+    <div className={styles.mainDialog}>
       <Dialog open={props.open} onClose={props.handleClose} keepMounted>
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent className={styles.content}>
