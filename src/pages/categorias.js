@@ -9,6 +9,8 @@ import AddDialog from 'src/components/category/dialogs/AddDialog';
 
 export default function Categorias() {
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editData, setEditData] = useState({});
 
   function createData(name, color, actions) {
     return { name, color, actions };
@@ -22,22 +24,13 @@ export default function Categorias() {
     createData('Dois', '#0a0a0a',),
   ];
 
-  const fabStyle = {
-    position: 'relative',
-    bottom: '0px',
-    right: '0px',
-  }
-
   function toggleAdd() {
-    setShow(!show);
+    setIsAddOpen(!isAddOpen);
   }
 
-  function openAdd() {
-    setIsAddOpen(true);
-  }
-
-  function closeAdd() {
-    setIsAddOpen(false)
+  function toggleEdit(name, color) {
+    isEditOpen ? setEditData({}) : setEditData({name, color});
+    setIsEditOpen(!isEditOpen);
   }
 
   return (
@@ -46,7 +39,8 @@ export default function Categorias() {
         <title>TimeLess - Categorias</title>
       </Head>
 
-      <AddDialog role="add" open={isAddOpen} handleClose={closeAdd} />
+      <AddDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
+      <AddDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
 
       <section className={styles.section}>
         <h1>Categorias</h1>
@@ -61,7 +55,7 @@ export default function Categorias() {
                         <CategoryItem color={row.color}>{row.name}</CategoryItem>
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton color="primary">
+                        <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.name, row.color)}>
                           <EditOutlined />
                         </IconButton>
                         <IconButton color="primary">
@@ -78,7 +72,7 @@ export default function Categorias() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Fab onClick={openAdd} className={styles.fab} color="secondary" aria-label="add">
+        <Fab onClick={toggleAdd} className={styles.fab} color="secondary" aria-label="add">
           <Add />
         </Fab>
       </section>

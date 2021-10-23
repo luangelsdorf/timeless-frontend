@@ -8,24 +8,34 @@ import DialogTitle from '@mui/material/DialogTitle';
 import styles from './AddDialog.module.scss';
 
 export default function AddDialog(props) {
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState('#708090');
   const [name, setName] = useState('');
+  console.info(`%cState: ${name}, ${color}`, 'color: lightblue');
 
-  let title;
-  if (props.role === 'add') title = 'Nova categoria';
+  if (props.data) console.log(props.data);
+
+  let title = props.role === 'add' ? 'Nova categoria' : 'Editar categoria';
 
   function handleSubmit(e) {
-    e.target.reset();
     e.preventDefault();
-    console.log(`${name}, ${color}`);
+    console.warn(`SUBMITTED - ${name}, ${color}`);
+    setColor('#708090');
+    setName('');
   }
+
+  useEffect(() => {
+    if (props.role === 'edit' && props.open) {
+      setColor(props.data.color);
+      setName(props.data.name);
+    }
+  }, [props.open])
 
   return (
     <div className={styles.addDialog}>
       <Dialog open={props.open} onClose={props.handleClose} keepMounted>
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle>{props.title}</DialogTitle>
         <DialogContent className={styles.content}>
-          <form onSubmit={handleSubmit} id="colorForm">
+          <form onSubmit={handleSubmit} id={props.role === 'edit' ? 'editCat' : 'addCat'}>
             <div className={styles.inputWrapper}>
               <label>
                 <input
@@ -33,7 +43,8 @@ export default function AddDialog(props) {
                   type="color"
                   required
                   onChange={e => setColor(e.target.value)}
-                  id="taskColor"
+                  key={color}
+                  value={color}
                 />
               </label>
             </div>
@@ -41,18 +52,26 @@ export default function AddDialog(props) {
               autoFocus
               required
               margin="dense"
-              id="color"
               label="Nome"
               type="text"
               fullWidth
               variant="standard"
               onChange={e => setName(e.target.value)}
+              key={name}
+              value={name}
             />
           </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleClose}>Cancelar</Button>
-          <Button type="submit" form="colorForm" disabled={name && color ? false : true} onClick={props.handleClose}>Criar</Button>
+          <Button
+            type="submit"
+            form={props.role === 'edit' ? 'editCat' : 'addCat'}
+            disabled={name && color ? false : true}
+            onClick={props.handleClose}
+          >
+            Salvar
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
