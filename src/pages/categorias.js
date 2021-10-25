@@ -6,10 +6,12 @@ import { Fab, IconButton, Table, TableBody, TableCell, TableContainer,TableRow }
 import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
 import MainDialog from 'src/components/category/dialogs/MainDialog';
+import DeleteDialog from 'src/components/category/dialogs/DeleteDialog';
 
 export default function Categorias() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDelOpen, setIsDelOpen] = useState(false);
   const [editData, setEditData] = useState({});
 
   function createData(name, color, actions) {
@@ -28,6 +30,10 @@ export default function Categorias() {
     setIsAddOpen(!isAddOpen);
   }
 
+  function toggleDelete() {
+    setIsDelOpen(!isDelOpen);
+  }
+
   function toggleEdit(name, color) {
     isEditOpen ? setEditData({}) : setEditData({name, color});
     setIsEditOpen(!isEditOpen);
@@ -41,6 +47,7 @@ export default function Categorias() {
 
       <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
       <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
+      <DeleteDialog open={isDelOpen} handleClose={toggleDelete} />
 
       <section className={styles.section}>
         <h1>Categorias</h1>
@@ -58,7 +65,7 @@ export default function Categorias() {
                         <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.name, row.color)}>
                           <EditOutlined />
                         </IconButton>
-                        <IconButton color="primary">
+                        <IconButton color="primary" onClick={toggleDelete}>
                           <DeleteOutlined />
                         </IconButton>
                         <IconButton color="primary">

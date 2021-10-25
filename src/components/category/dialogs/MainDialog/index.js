@@ -10,13 +10,9 @@ import styles from './MainDialog.module.scss';
 export default function MainDialog(props) {
   const [color, setColor] = useState('#708090');
   const [name, setName] = useState('');
-  console.info(`%cState: ${name}, ${color}`, 'color: lightblue');
-
-  if (props.data) console.log(props.data);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.warn(`SUBMITTED - ${name}, ${color}`);
     setColor('#708090');
     setName('');
   }
@@ -64,6 +60,7 @@ export default function MainDialog(props) {
           <Button onClick={props.handleClose}>Cancelar</Button>
           <Button
             type="submit"
+            variant="contained"
             form={props.role === 'edit' ? 'editCat' : 'addCat'}
             disabled={name && color ? false : true}
             onClick={props.handleClose}
