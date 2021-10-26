@@ -18,6 +18,23 @@ export default function MainDialog(props) {
   }
 
   useEffect(() => {
+    let inputs = document.querySelectorAll('input[type="color"]');
+    inputs.forEach(input => {
+      input.addEventListener('change', handleColorChange)
+    });
+
+    return () => {
+      inputs.forEach(input => {
+        input.removeEventListener('change', handleColorChange)
+      });
+    }
+  }, [])
+
+  function handleColorChange(e) {
+    setColor(e.target.value);
+  }
+
+  useEffect(() => {
     if (props.role === 'edit' && props.open) {
       setColor(props.data.color);
       setName(props.data.name);
@@ -36,9 +53,6 @@ export default function MainDialog(props) {
                   className={styles.input}
                   type="color"
                   required
-                  onChange={e => setColor(e.target.value)}
-                  key={color}
-                  value={color}
                 />
               </label>
             </div>
