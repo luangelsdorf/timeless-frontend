@@ -5,8 +5,8 @@ import Paper from '@mui/material/Paper';
 import { Fab, IconButton, Table, TableBody, TableCell, TableContainer,TableRow } from '@mui/material';
 import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
-import MainDialog from 'src/components/category/dialogs/MainDialog';
-import DeleteDialog from 'src/components/category/dialogs/DeleteDialog';
+import MainDialog from 'src/components/category/MainDialog';
+import DeleteDialog from 'src/components/category/DeleteDialog';
 
 export default function Categorias() {
   const [isAddOpen, setIsAddOpen] = useState(false);

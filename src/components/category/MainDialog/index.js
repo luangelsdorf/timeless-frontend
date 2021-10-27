@@ -8,35 +8,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import styles from './MainDialog.module.scss';
 
 export default function MainDialog(props) {
-  const [color, setColor] = useState('#708090');
   const [name, setName] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
-    setColor('#708090');
+    console.warn(`SUBMITTED - ${name}, ${e.target[0].value}`);
     setName('');
   }
 
   useEffect(() => {
-    let inputs = document.querySelectorAll('input[type="color"]');
-    inputs.forEach(input => {
-      input.addEventListener('change', handleColorChange)
-    });
-
-    return () => {
-      inputs.forEach(input => {
-        input.removeEventListener('change', handleColorChange)
-      });
-    }
-  }, [])
-
-  function handleColorChange(e) {
-    setColor(e.target.value);
-  }
-
-  useEffect(() => {
     if (props.role === 'edit' && props.open) {
-      setColor(props.data.color);
+      document.querySelector('#editCat input[type="color"]').value = props.data.color;
       setName(props.data.name);
     }
   }, [props.open])
@@ -76,7 +58,7 @@ export default function MainDialog(props) {
             type="submit"
             variant="contained"
             form={props.role === 'edit' ? 'editCat' : 'addCat'}
-            disabled={name && color ? false : true}
+            disabled={name ? false : true}
             onClick={props.handleClose}
           >
             Salvar
