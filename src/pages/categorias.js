@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import styles from 'src/styles/pages/categorias.module.scss';
 import Paper from '@mui/material/Paper';
-import { Fab, IconButton, Table, TableBody, TableCell, TableContainer,TableRow } from '@mui/material';
+import { Fab, IconButton, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
 import CategoryItem from 'src/components/category/CategoryItem';
 import MainDialog from 'src/components/category/MainDialog';
 import DeleteDialog from 'src/components/category/DeleteDialog';
+import { apiUrl } from 'src/util/env';
+import { fetchData } from 'src/util/helpers';
 
 export default function Categorias() {
+  const [categories, setCategories] = useState(null);
+  //
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDelOpen, setIsDelOpen] = useState(false);
@@ -35,9 +39,17 @@ export default function Categorias() {
   }
 
   function toggleEdit(name, color) {
-    isEditOpen ? setEditData({}) : setEditData({name, color});
+    isEditOpen ? setEditData({}) : setEditData({ name, color });
     setIsEditOpen(!isEditOpen);
   }
+
+  useEffect(() => {
+    async function setData() {
+      let response = await fetchData('/v1/category');
+      setCategories(response);
+    }
+    setData();
+  }, [])
 
   return (
     <>
@@ -53,28 +65,31 @@ export default function Categorias() {
         <h1>Categorias</h1>
         <TableContainer component={Paper}>
           <Table>
+            {console.log(categories)}
             <TableBody>
               {
-                rows.map((row, index) => {
-                  return (
-                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell className={styles.item} component="th" scope="row">
-                        <CategoryItem color={row.color}>{row.name}</CategoryItem>
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.name, row.color)}>
-                          <EditOutlined />
-                        </IconButton>
-                        <IconButton color="primary" onClick={toggleDelete}>
-                          <DeleteOutlined />
-                        </IconButton>
-                        <IconButton color="primary">
-                          <VisibilityOutlined />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })
+                categories ? (
+                  categories.map(row => {
+                    return (
+                      <TableRow key={`row-${row.id}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell className={styles.item} component="th" scope="row">
+                          <CategoryItem color={row.color}>{row.name}</CategoryItem>
+                        </TableCell>
+                        <TableCell align="right">
+                          <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.name, row.color)}>
+                            <EditOutlined />
+                          </IconButton>
+                          <IconButton color="primary" onClick={toggleDelete}>
+                            <DeleteOutlined />
+                          </IconButton>
+                          <IconButton color="primary">
+                            <VisibilityOutlined />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                ) : null
               }
             </TableBody>
           </Table>
