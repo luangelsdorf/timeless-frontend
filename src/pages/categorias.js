@@ -16,7 +16,7 @@ import DeleteDialog from 'src/components/category/DeleteDialog';
 import { fetchData } from 'src/util/helpers';
 
 export default function Categorias() {
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState([]);
   //
   const [isAddOpen, setIsAddOpen] = useState(false);
   //
@@ -73,7 +73,7 @@ export default function Categorias() {
           <Table>
             <TableBody>
               {
-                categories ? (
+                categories.length > 0 ? (
                   categories.map(row => {
                     return (
                       <TableRow key={`row-${row.id}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -94,7 +94,7 @@ export default function Categorias() {
                       </TableRow>
                     )
                   })
-                ) : null
+                ) : <h3>Nenhuma categoria para mostrar...</h3>
               }
             </TableBody>
           </Table>
