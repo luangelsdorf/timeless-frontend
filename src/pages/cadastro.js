@@ -2,7 +2,8 @@ import React from 'react';
 import Head from 'next/head'
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Button, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Link from 'src/components/common/Link';
 import handleRegister from 'src/handlers/handleRegister';
 import styles from 'src/styles/pages/cadastro.module.scss';

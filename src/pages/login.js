@@ -2,11 +2,11 @@ import React from 'react';
 import Head from 'next/head'
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Button, IconButton, InputAdornment, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Link from 'src/components/common/Link';
 import styles from 'src/styles/pages/cadastro.module.scss';
 import handleLogin from 'src/handlers/handleLogin';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PassWordToggle from 'src/components/common/PassWordToggle';
 
 export default function Home() {

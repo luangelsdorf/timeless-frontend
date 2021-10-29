@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { Category, Logout, TaskAlt } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import styles from 'src/styles/pages/layout.module.scss';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import handleLogout from 'src/handlers/handleLogout';
 
 const drawerWidth = 240;
