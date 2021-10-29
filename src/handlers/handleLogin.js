@@ -1,5 +1,7 @@
-export default function handleLogin(data) {
-  fetch('http://168.232.7.161/login', {
+import { apiUrl } from "src/util/env";
+
+export default async function handleLogin(data) {
+  fetch(`${apiUrl}/login`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json, text/plain',
@@ -11,6 +13,8 @@ export default function handleLogin(data) {
     })
   })
   .then(res => {
-    window.localStorage.setItem('token', res.headers.get('Authorization'));
+    if (res.ok) {
+      window.localStorage.setItem('token', res.headers.get('Authorization'));
+    }
   });
 }

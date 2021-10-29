@@ -19,15 +19,19 @@ export default function Categorias() {
   const [categories, setCategories] = useState(null);
   //
   const [isAddOpen, setIsAddOpen] = useState(false);
+  //
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDelOpen, setIsDelOpen] = useState(false);
   const [editData, setEditData] = useState({});
+  //
+  const [isDelOpen, setIsDelOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   function toggleAdd() {
     setIsAddOpen(!isAddOpen);
   }
 
-  function toggleDelete() {
+  function toggleDelete(deleteId) {
+    isDelOpen ? setDeleteId(null) : setDeleteId(deleteId);
     setIsDelOpen(!isDelOpen);
   }
 
@@ -48,8 +52,8 @@ export default function Categorias() {
     }
     setData();
 
-    document.addEventListener('submit', reFetchData);
-    return () => document.removeEventListener('submit', reFetchData);
+    /* document.addEventListener('dataChange', reFetchData);
+    return () => document.removeEventListener('dataChange', reFetchData); */
   }, [])
 
   return (
@@ -59,9 +63,9 @@ export default function Categorias() {
       </Head>
       <section className={styles.section} id="cat-sect">
 
-      <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
-      <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
-      <DeleteDialog open={isDelOpen} handleClose={toggleDelete} />
+        <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} reFetchData={reFetchData} />
+        <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} reFetchData={reFetchData} />
+        <DeleteDialog open={isDelOpen} handleClose={toggleDelete} id={deleteId} reFetchData={reFetchData} />
 
 
         <h1>Categorias</h1>
@@ -80,7 +84,7 @@ export default function Categorias() {
                           <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.id, row.name, row.color)}>
                             <EditOutlined />
                           </IconButton>
-                          <IconButton color="primary" onClick={toggleDelete}>
+                          <IconButton color="primary" onClick={() => toggleDelete(row.id)}>
                             <DeleteOutlined />
                           </IconButton>
                           <IconButton color="primary">

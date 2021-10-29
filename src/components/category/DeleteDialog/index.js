@@ -5,9 +5,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React from 'react'
+import { deleteCategory } from 'src/handlers/category';
 import styles from './DeleteDialog.module.scss';
 
-export default function DeleteDialog({open, handleClose}) {
+export default function DeleteDialog({open, handleClose, id, reFetchData}) {
+
+  function handleDelete(e) {
+    deleteCategory(id, e.target).then(() => reFetchData());
+    handleClose();
+  }
+
   return (
     <div className={styles.deleteDialog}>
       <Dialog
@@ -22,7 +29,7 @@ export default function DeleteDialog({open, handleClose}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button variant="contained" color="error" onClick={handleClose} autoFocus>Excluir</Button>
+          <Button variant="contained" color="error" onClick={handleDelete} autoFocus>Excluir</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -8,11 +8,15 @@ import Link from 'src/components/common/Link';
 import styles from 'src/styles/pages/cadastro.module.scss';
 import handleLogin from 'src/handlers/handleLogin';
 import PassWordToggle from 'src/components/common/PassWordToggle';
+import { apiUrl } from 'src/util/env';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
   const [showPass, setShowPass] = useState(false)
+
+  const router = useRouter();
 
   const handleShowPass = () => setShowPass(!showPass);
 
@@ -22,7 +26,23 @@ export default function Home() {
       username: user,
       password: pass,
     }
-    handleLogin(data);
+    fetch(`${apiUrl}/login`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: user,
+        password: pass,
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        window.localStorage.setItem('token', res.headers.get('Authorization'));
+        router.push('/categorias');
+      }
+    })
   }
 
   return (

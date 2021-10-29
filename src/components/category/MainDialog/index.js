@@ -16,27 +16,16 @@ export default function MainDialog(props) {
   function handleSubmit(e) {
     e.preventDefault();
     let color = e.target[0].value;
-    console.warn(`${props.role === 'edit' ? 'PUT' : 'POST'} - (${id}) ${name}, ${e.target[0].value}`);
-    props.role === 'edit' ? editCategory(id, {name, color}) : createCategory({name, color});
+
+    if (props.role === 'edit') {
+      editCategory(id, {name, color}).then(() => props.reFetchData());
+    } else {
+      createCategory({name, color}).then(() => props.reFetchData());
+    }
 
     setName('');
     setId(0);
   }
-
-  /* function createCategory(name, color) {
-    fetch(`${apiUrl}/v1/category`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-Type': 'application/json',
-        'Authorization': window.localStorage.token,
-      },
-      body: JSON.stringify({
-        name: name,
-        color: color,
-      })
-    })
-  } */
 
   useEffect(() => {
     if (props.role === 'edit' && props.open) {

@@ -22,6 +22,9 @@ export async function makeRequest(url, method, body) {
     },
     body: JSON.stringify(body),
   })
-  const payload = res.ok ? await res.json() : console.error(await res.json());
-  return payload;
+  /* const payload = res.ok ? await res.json() : console.error(await res.json()); */
+  if (res.ok) {
+    if (method !== 'DELETE') return await res.json();
+    else return 'ok';
+  }
 }
