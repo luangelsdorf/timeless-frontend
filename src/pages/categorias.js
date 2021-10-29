@@ -7,7 +7,6 @@ import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icon
 import CategoryItem from 'src/components/category/CategoryItem';
 import MainDialog from 'src/components/category/MainDialog';
 import DeleteDialog from 'src/components/category/DeleteDialog';
-import { apiUrl } from 'src/util/env';
 import { fetchData } from 'src/util/helpers';
 
 export default function Categorias() {
@@ -18,18 +17,6 @@ export default function Categorias() {
   const [isDelOpen, setIsDelOpen] = useState(false);
   const [editData, setEditData] = useState({});
 
-  function createData(name, color, actions) {
-    return { name, color, actions };
-  }
-
-  const rows = [
-    createData('Lazer', '#aa751b',),
-    createData('Trabalho', '#facada',),
-    createData('Escola', '#df8b52',),
-    createData('Um', '#ffde87',),
-    createData('Dois', '#0a0a0a',),
-  ];
-
   function toggleAdd() {
     setIsAddOpen(!isAddOpen);
   }
@@ -38,9 +25,14 @@ export default function Categorias() {
     setIsDelOpen(!isDelOpen);
   }
 
-  function toggleEdit(name, color) {
-    isEditOpen ? setEditData({}) : setEditData({ name, color });
+  function toggleEdit(id, name, color) {
+    isEditOpen ? setEditData({}) : setEditData({ id, name, color });
     setIsEditOpen(!isEditOpen);
+  }
+
+  async function reFetchData() {
+    let response = await fetchData('/v1/category');
+    setCategories(response);
   }
 
   useEffect(() => {
@@ -49,6 +41,9 @@ export default function Categorias() {
       setCategories(response);
     }
     setData();
+
+    document.addEventListener('submit', reFetchData);
+    return () => document.removeEventListener('submit', reFetchData);
   }, [])
 
   return (
@@ -56,16 +51,16 @@ export default function Categorias() {
       <Head>
         <title>TimeLess - Categorias</title>
       </Head>
+      <section className={styles.section} id="cat-sect">
 
       <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} />
       <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} />
       <DeleteDialog open={isDelOpen} handleClose={toggleDelete} />
 
-      <section className={styles.section}>
+
         <h1>Categorias</h1>
         <TableContainer component={Paper}>
           <Table>
-            {console.log(categories)}
             <TableBody>
               {
                 categories ? (
@@ -76,7 +71,7 @@ export default function Categorias() {
                           <CategoryItem color={row.color}>{row.name}</CategoryItem>
                         </TableCell>
                         <TableCell align="right">
-                          <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.name, row.color)}>
+                          <IconButton title="Editar" color="primary" onClick={() => toggleEdit(row.id, row.name, row.color)}>
                             <EditOutlined />
                           </IconButton>
                           <IconButton color="primary" onClick={toggleDelete}>

@@ -6,20 +6,43 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import styles from './MainDialog.module.scss';
+import { apiUrl } from 'src/util/env';
+import { createCategory, editCategory } from 'src/handlers/category';
 
 export default function MainDialog(props) {
   const [name, setName] = useState('');
+  const [id, setId] = useState(0);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.warn(`SUBMITTED - ${name}, ${e.target[0].value}`);
+    let color = e.target[0].value;
+    console.warn(`${props.role === 'edit' ? 'PUT' : 'POST'} - (${id}) ${name}, ${e.target[0].value}`);
+    props.role === 'edit' ? editCategory(id, {name, color}) : createCategory({name, color});
+
     setName('');
+    setId(0);
   }
+
+  /* function createCategory(name, color) {
+    fetch(`${apiUrl}/v1/category`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/json',
+        'Authorization': window.localStorage.token,
+      },
+      body: JSON.stringify({
+        name: name,
+        color: color,
+      })
+    })
+  } */
 
   useEffect(() => {
     if (props.role === 'edit' && props.open) {
       document.querySelector('#editCat input[type="color"]').value = props.data.color;
       setName(props.data.name);
+      setId(props.data.id);
     }
   }, [props.open])
 
