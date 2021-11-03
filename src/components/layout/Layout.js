@@ -16,14 +16,18 @@ import { Category, Logout, TaskAlt } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import styles from 'src/styles/pages/layout.module.scss';
 import Button from '@mui/material/Button';
-import handleLogout from 'src/handlers/handleLogout';
 
 const drawerWidth = 240;
 
 function Layout(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
   const router = useRouter();
+  const handleLogout = (e) => {
+    e.view.localStorage.removeItem('token');
+    router.push('/login');
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
