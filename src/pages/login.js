@@ -20,29 +20,14 @@ export default function Home() {
 
   const handleShowPass = () => setShowPass(!showPass);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const data = {
       username: user,
       password: pass,
     }
-    fetch(`${apiUrl}/login`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: user,
-        password: pass,
-      })
-    })
-    .then(res => {
-      if (res.ok) {
-        window.localStorage.setItem('token', res.headers.get('Authorization'));
-        router.push('/categorias');
-      }
-    })
+
+    handleLogin(data, router);
   }
 
   return (

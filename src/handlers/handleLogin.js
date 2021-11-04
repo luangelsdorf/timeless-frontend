@@ -1,6 +1,6 @@
 import { apiUrl } from "src/util/env";
 
-export default async function handleLogin(data) {
+export default function handleLogin(data, router) {
   fetch(`${apiUrl}/login`, {
     method: 'POST',
     headers: {
@@ -15,6 +15,10 @@ export default async function handleLogin(data) {
   .then(res => {
     if (res.ok) {
       window.localStorage.setItem('token', res.headers.get('Authorization'));
+      router.push('/categorias');
+    } else {
+      throw new Error(res.status)
     }
-  });
+  })
+  .catch(error => console.log(error))
 }

@@ -8,6 +8,8 @@ import Link from 'src/components/common/Link';
 import handleRegister from 'src/handlers/handleRegister';
 import styles from 'src/styles/pages/cadastro.module.scss';
 import PassWordToggle from 'src/components/common/PassWordToggle';
+import handleLogin from 'src/handlers/handleLogin';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const [user, setUser] = useState('');
@@ -19,6 +21,7 @@ export default function Home() {
   const [showPass, setShowPass] = useState(false)
 
   const handleShowPass = () => setShowPass(!showPass);
+  const router = useRouter();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +34,7 @@ export default function Home() {
       confirmationPassword: confPass,
     }
 
-    handleRegister(data);
+    handleRegister(data, router);
   }
 
   return (
