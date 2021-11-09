@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
@@ -30,10 +30,16 @@ export default function MyApp(props) {
 
   const router = useRouter();
 
+/*   useEffect(() => {
+    if (!window.localStorage.getItem('token')) {
+      router.push('/login');
+    }
+  }, []) */
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>My page</title>
+        <title>TimeLess</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>

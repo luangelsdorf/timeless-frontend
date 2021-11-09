@@ -9,11 +9,15 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import { Add, DeleteOutlined, EditOutlined, VisibilityOutlined } from '@mui/icons-material';
+import Add from '@mui/icons-material/Add';
+import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
+import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import CategoryItem from 'src/components/category/CategoryItem';
 import MainDialog from 'src/components/category/MainDialog';
 import DeleteDialog from 'src/components/category/DeleteDialog';
 import { fetchData } from 'src/util/helpers';
+import Typography from '@mui/material/Typography';
 
 export default function Categorias() {
   const [categories, setCategories] = useState([]);
@@ -94,11 +98,16 @@ export default function Categorias() {
                       </TableRow>
                     )
                   })
-                ) : <h3>Nenhuma categoria para mostrar...</h3>
+                ) : null
               }
             </TableBody>
           </Table>
         </TableContainer>
+        {
+          categories.length === 0 ? (
+            <Typography color="primary" variant="h5" style={{ background: '#121212' }}>Nenhuma categoria para mostrar...</Typography>
+          ) : null
+        }
         <Fab onClick={toggleAdd} className={styles.fab} color="secondary" aria-label="add">
           <Add />
         </Fab>

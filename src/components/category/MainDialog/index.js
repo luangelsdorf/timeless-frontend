@@ -37,7 +37,7 @@ export default function MainDialog(props) {
 
   return (
     <div className={styles.mainDialog}>
-      <Dialog open={props.open} onClose={props.handleClose} keepMounted>
+      <Dialog fullScreen open={props.open} onClose={props.handleClose} keepMounted>
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent className={styles.content}>
           <form onSubmit={handleSubmit} id={props.role === 'edit' ? 'editCat' : 'addCat'}>
