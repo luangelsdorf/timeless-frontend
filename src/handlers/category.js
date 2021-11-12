@@ -4,7 +4,8 @@ import { makeRequest } from "src/util/helpers";
 // /category
 // GET
 export async function getCategories() {
-  
+  const res = await makeRequest(`${apiUrl}/v1/category`, 'GET');
+  return res;
 }
 
 // POST
@@ -21,7 +22,7 @@ export async function editCategory(id, body) {
 }
 
 // DELETE
-export async function deleteCategory(id, target) {
+export async function deleteCategory(id) {
   const res = await makeRequest(`${apiUrl}/v1/category/${id}`, 'DELETE');
   return res;
 }
