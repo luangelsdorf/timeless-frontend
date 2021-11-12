@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './MainDialog.module.scss'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,13 +18,16 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { fetchData } from 'src/util/helpers';
+import TimeLine from '../Timeline';
 
 export default function MainDialog(props) {
   // fixed data
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
+  const [priority, setPriority] = useState('');
   const [cat, setCat] = useState('');
-  const [start, setStart] = useState('');
+  const [start, setStart] = useState(new Date());
   const [taskType, setTaskType] = useState('P');
 
   //pomodoro
@@ -35,35 +38,39 @@ export default function MainDialog(props) {
   const [repeats, setRepeats] = useState('');
 
   // endtime
-  const [end, setEnd] = useState('');
+  const [end, setEnd] = useState(new Date());
+  //
+  const [categories, setCategories] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e);
+    
   }
 
   function handleRadio(e) {
     setTaskType(e.target.value);
   }
 
-  const categories = [
-    {
-      id: 1,
-      name: 'Um',
-    },
-    {
-      id: 2,
-      name: 'Dois',
-    },
-    {
-      id: 3,
-      name: 'Três',
-    },
-    {
-      id: 3,
-      name: 'asdasdasdasdasdasd',
-    },
-  ];
+  // pegar categorias
+  useEffect(() => {
+    async function setData() {
+      let response = await fetchData('/v1/category');
+      setCategories(response);
+    }
+    setData();
+  }, [])
+
+  const data = {
+    name: name,
+    description: desc,
+    priority: priority,
+    categoryId: cat,
+    startTime: start,
+    taskType: taskType,
+    //
+    endTime: end,
+  }
+  console.log(data);
 
   return (
     <Dialog fullScreen open={props.open} onClose={props.handleClose} keepMounted>
@@ -86,10 +93,12 @@ export default function MainDialog(props) {
               <TextField label="Nome" required value={name} onChange={e => setName(e.target.value)} />
               {/* descrição */}
               <TextField label="Descrição" required multiline value={desc} onChange={e => setDesc(e.target.value)} />
+              {/* prioridade */}
+              <TextField label="Prioridade (1 a 3)" required type="number" inputProps={{ min: '1', max: '3' }} value={priority} onChange={e => setPriority(e.target.value)} />
               {/* categoria */}
               <FormControl>
                 <InputLabel id="cat-label">Categoria</InputLabel>
-                <Select style={{minWidth: '200px'}}
+                <Select style={{ minWidth: '200px' }}
                   labelId="cat-label"
                   id="category"
                   label="Categoria"
@@ -111,7 +120,7 @@ export default function MainDialog(props) {
                   label="Início"
                   value={start}
                   inputFormat="dd/MM/yyyy HH:mm"
-                  onChange={newValue => setStart(newValue)}
+                  onChange={newValue => setStart(newValue.toJSON())}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -132,7 +141,7 @@ export default function MainDialog(props) {
                   label="Término"
                   value={end}
                   inputFormat="dd/MM/yyyy HH:mm"
-                  onChange={newValue => setEnd(newValue)}
+                  onChange={newValue => setEnd(newValue.toJSON())}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -143,10 +152,13 @@ export default function MainDialog(props) {
                 <TextField required type="number" label="Pausa longa (minutos)" value={longBreak} onChange={e => setLongBreak(e.target.value)} />
                 <TextField required type="number" label="Ciclos até uma pausa longa" value={cyclesUntilLongBreak} onChange={e => setCyclesUntilLongBreak(e.target.value)} />
                 <TextField required type="number" label="Número de ciclos (repetições)" value={repeats} onChange={e => setRepeats(e.target.value)} />
+
+                <TimeLine
+                  fields={{ focusTime, shortBreak, longBreak, cyclesUntilLongBreak, repeats }}
+                />
               </div>
             )
           }
-
         </form>
       </DialogContent>
     </Dialog>

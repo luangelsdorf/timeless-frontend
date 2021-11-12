@@ -1,0 +1,45 @@
+.section {
+  margin-top: 50px;
+
+  & > div {
+    margin-bottom: 16px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.timeSection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  min-height: 50px;
+  border-radius: 5px;
+}
+
+.timeline > div {
+  display: flex;
+  width: 100%;
+}
+
+.legend {
+  & > div {
+    border-left: 3px solid;
+    padding-left: 16px;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  & > div:nth-of-type(1) {
+    border-color: salmon;
+  }
+  & > div:nth-of-type(2) {
+    border-color: lightgreen;
+  }
+  & > div:nth-of-type(3) {
+    border-color: lightblue;
+    margin-bottom: 0;
+  }
+}

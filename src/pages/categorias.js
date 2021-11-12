@@ -55,9 +55,6 @@ export default function Categorias() {
       setCategories(response);
     }
     setData();
-
-    /* document.addEventListener('dataChange', reFetchData);
-    return () => document.removeEventListener('dataChange', reFetchData); */
   }, [])
 
   return (
