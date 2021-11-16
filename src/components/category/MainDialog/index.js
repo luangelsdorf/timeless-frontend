@@ -6,7 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import styles from './MainDialog.module.scss';
-import { apiUrl } from 'src/util/env';
 import { createCategory, editCategory } from 'src/handlers/category';
 
 export default function MainDialog(props) {

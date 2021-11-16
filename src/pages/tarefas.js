@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from 'src/styles/pages/tarefas.module.scss';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,52 +12,102 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Fab from '@mui/material/Fab';
 import MainDialog from 'src/components/task/MainDialog';
+import CategoryItem from 'src/components/category/CategoryItem';
+import { fetchData } from 'src/util/helpers';
 
 export default function Tarefas() {
+  const [categories, setCategories] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  //
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [role, setRole] = useState('');
 
   function toggleAdd() {
+    setRole('add');
     setIsAddOpen(!isAddOpen);
   }
+
+  function toggleEdit(id) {
+    setRole('edit');
+    setSelected(id)
+    setIsAddOpen(!isAddOpen);
+  }
+
+  function toggleDelete(id) {
+    setSelected(id)
+  }
+
+  function closeDialog() {
+    setIsAddOpen(false);
+  }
+
+  async function reFetchData() {
+    let response = await fetchData('/v1/task');
+    setTasks(response);
+  }
+
+  useEffect(() => {
+    async function setData() {
+      let categories = await fetchData('/v1/category');
+      let tasks = await fetchData('/v1/task');
+      setCategories(categories);
+      setTasks(tasks)
+    }
+    setData();
+  }, [])
 
   return (
     <section className={styles.section}>
 
-      <MainDialog title="Nova tarefa" open={isAddOpen} handleClose={toggleAdd} />
+      <MainDialog
+        selected={tasks.find(task => task.id === selected)}
+        categories={categories}
+        role={role}
+        open={isAddOpen}
+        handleClose={closeDialog}
+        reFetchData={reFetchData}
+      />
 
       <List sx={{ bgcolor: 'background.paper' }}>
         {
-          [0, 1, 2, 3].map((value) => {
-            const labelId = `checkbox-list-label-${value}`;
-
-            return (
-              <ListItem
-                key={value}
-                secondaryAction={
-                  <div className="asdasd">
-                    <IconButton edge="end">
-                      <EditOutlinedIcon color="primary" />
-                    </IconButton>
-                    <IconButton edge="end">
-                      <DeleteOutlinedIcon color="primary" />
-                    </IconButton>
-                  </div>
-                }
-                disablePadding
-              >
-                <ListItemButton dense>
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <ListItemText id={labelId} primary={`Item ${value + 1}`} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })
+          tasks.length > 0 ? (
+            tasks.map((task, index) => {
+              const labelId = `checkbox-list-label-${index}`;;
+              return (
+                <ListItem
+                  key={`item-${index}`}
+                  secondaryAction={
+                    <div>
+                      <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
+                        <EditOutlinedIcon color="primary" />
+                      </IconButton>
+                      <IconButton edge="end">
+                        <DeleteOutlinedIcon color="primary" />
+                      </IconButton>
+                    </div>
+                  }
+                  disablePadding
+                >
+                  <ListItemButton dense style={{ flex: 'initial' }}>
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                    </ListItemIcon>
+                    <ListItemText id={labelId} primary={task.name} />
+                    <div className={styles.taskItems}>
+                      <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
+                        {categories.find(cat => cat.id === task.categoryId).name}
+                      </CategoryItem>
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              );
+            })
+          ) : null
         }
       </List>
       <Fab onClick={toggleAdd} className={styles.fab} color="secondary" >

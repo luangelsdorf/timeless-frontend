@@ -13,13 +13,12 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Button from '@mui/material/Button';
-import SaveIcon from '@mui/icons-material/Save';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { fetchData } from 'src/util/helpers';
 import TimeLine from '../Timeline';
+import { createTask, editTask } from 'src/handlers/tasks';
 
 export default function MainDialog(props) {
   // fixed data
@@ -27,7 +26,7 @@ export default function MainDialog(props) {
   const [desc, setDesc] = useState('');
   const [priority, setPriority] = useState('');
   const [cat, setCat] = useState('');
-  const [start, setStart] = useState(new Date());
+  const [start, setStart] = useState(new Date().toJSON());
   const [taskType, setTaskType] = useState('P');
 
   //pomodoro
@@ -38,51 +37,107 @@ export default function MainDialog(props) {
   const [repeats, setRepeats] = useState('');
 
   // endtime
-  const [end, setEnd] = useState(new Date());
-  //
-  const [categories, setCategories] = useState([]);
+  const [end, setEnd] = useState(new Date().toJSON());
 
   function handleSubmit(e) {
     e.preventDefault();
-    
+    if (props.role === 'edit') {
+      if (taskType === 'E') {
+        editTask(props.selected.id, endData).then(() => props.reFetchData());
+      } else {
+        editTask(props.selected.id, pomoData).then(() => props.reFetchData());
+      }
+    } else {
+      if (taskType === 'E') {
+        createTask(endData).then(() => props.reFetchData());
+      } else {
+        createTask(pomoData).then(() => props.reFetchData());
+      }
+    }
+    close();
+  }
+
+  function close() {
+    setName('');
+    setDesc('');
+    setPriority('');
+    setCat('');
+    setStart(new Date().toJSON());
+    setEnd(new Date().toJSON());
+    setTaskType('P');
+    setFocusTime(25);
+    setShortBreak(5);
+    setLongBreak(15);
+    setCyclesUntilLongBreak(3);
+    setRepeats('');
+
+    props.handleClose();
   }
 
   function handleRadio(e) {
     setTaskType(e.target.value);
   }
 
-  // pegar categorias
-  useEffect(() => {
-    async function setData() {
-      let response = await fetchData('/v1/category');
-      setCategories(response);
-    }
-    setData();
-  }, [])
-
-  const data = {
+  const fixedData = {
     name: name,
     description: desc,
     priority: priority,
     categoryId: cat,
-    startTime: start,
+    startTime: start.replace('Z', '-03'),
     taskType: taskType,
-    //
-    endTime: end,
   }
-  console.log(data);
+
+  const pomoData = {
+    ...fixedData,
+    focusTime: focusTime,
+    shortBreak: shortBreak,
+    longTime: longBreak,
+    cyclesUntilLongBreak: cyclesUntilLongBreak,
+    repeats: repeats,
+  }
+
+  const endData = {
+    ...fixedData,
+    endTime: end.replace('Z', '-03'),
+  }
+
+  useEffect(() => {
+    if (props.role === 'edit' && props.open) {
+      const task = props.selected;
+      const { name, description, priority, categoryId, startTime, taskType } = task
+      setName(name)
+      setDesc(description)
+      setPriority(priority)
+      setCat(categoryId)
+      setStart(new Date(startTime).toJSON())
+      setTaskType(taskType)
+
+      //
+      if (taskType === 'P') {
+        const { focusTime, shortBreak, longTime, cyclesUntilLongBreak, repeats } = task;
+        setFocusTime(focusTime);
+        setShortBreak(shortBreak);
+        setLongBreak(longTime);
+        setCyclesUntilLongBreak(cyclesUntilLongBreak);
+        setRepeats(repeats);
+      } else {
+        const { endTime } = task;
+        setEnd(new Date(endTime).toJSON());
+      }
+    }
+  }, [props.open])
 
   return (
-    <Dialog fullScreen open={props.open} onClose={props.handleClose} keepMounted>
+    <Dialog fullScreen open={props.open} onClose={close} keepMounted>
       <div className={styles.bar}>
         <div>
           <div>
-            <IconButton edge="start" color="inherit" onClick={props.handleClose}>
+            <IconButton edge="start" color="inherit" onClick={close}>
               <CloseIcon />
             </IconButton>
-            <DialogTitle>{props.title}</DialogTitle>
+            <DialogTitle>{props.role === 'add' ? 'Nova Tarefa' : 'Editar Tarefa'}</DialogTitle>
           </div>
-          <Button startIcon={<SaveIcon />} type="submit" form="taskForm">Salvar</Button>
+          <Button type="submit" form="taskForm">Salvar</Button>
         </div>
       </div>
       <DialogContent>
@@ -106,7 +161,7 @@ export default function MainDialog(props) {
                   onChange={e => setCat(e.target.value)}
                 >
                   {
-                    categories.map(cat => {
+                    props.categories.map(cat => {
                       return (
                         <MenuItem key={`cat-${cat.id}`} value={cat.id}>{cat.name}</MenuItem>
                       )
@@ -146,12 +201,12 @@ export default function MainDialog(props) {
                 />
               </LocalizationProvider>
             ) : (
-              <div className={styles.pomoFields}>
+              <div className={`${styles.pomoFields} pomodoros`}>
                 <TextField required type="number" label="Tempo de foco (minutos)" value={focusTime} onChange={e => setFocusTime(e.target.value)} />
                 <TextField required type="number" label="Pausa curta (minutos)" value={shortBreak} onChange={e => setShortBreak(e.target.value)} />
                 <TextField required type="number" label="Pausa longa (minutos)" value={longBreak} onChange={e => setLongBreak(e.target.value)} />
                 <TextField required type="number" label="Ciclos até uma pausa longa" value={cyclesUntilLongBreak} onChange={e => setCyclesUntilLongBreak(e.target.value)} />
-                <TextField required type="number" label="Número de ciclos (repetições)" value={repeats} onChange={e => setRepeats(e.target.value)} />
+                <TextField required type="number" label="Número de ciclos (repetições)" value={repeats} onChange={e => setRepeats(e.target.valueAsNumber)} />
 
                 <TimeLine
                   fields={{ focusTime, shortBreak, longBreak, cyclesUntilLongBreak, repeats }}

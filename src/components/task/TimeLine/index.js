@@ -10,7 +10,7 @@ export default function TimeLine({ fields }) {
   let { focusTime, shortBreak, longBreak, cyclesUntilLongBreak, repeats } = fields;
 
   const handleChange = () => {
-    let inputs = document.querySelectorAll('input[type="number"]');
+    let inputs = document.querySelectorAll('.pomodoros input[type="number"]');
     for (const element of inputs) {
       if (!element.value) return;
     }
@@ -49,6 +49,8 @@ export default function TimeLine({ fields }) {
   useEffect(() => {
     handleChange();
   }, [fields])
+
+  /* console.log(times); */
 
   return (
     <section className={styles.section}>

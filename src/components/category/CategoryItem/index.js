@@ -5,10 +5,10 @@ import styles from './CategoryItem.module.scss';
 export default function CategoryItem({ children, color }) {
   return (
     <div className={styles.item}>
-      <Button color="inherit">
+      <div>
         <span className={styles.color} style={{ backgroundColor: color }} />
         {children}
-      </Button>
+      </div>
     </div>
   )
 }

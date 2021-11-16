@@ -2,6 +2,7 @@ import { apiUrl } from "src/util/env";
 import { makeRequest } from "src/util/helpers";
 
 // /category
+
 // GET
 export async function getCategories() {
   const res = await makeRequest(`${apiUrl}/v1/category`, 'GET');
@@ -15,6 +16,13 @@ export async function createCategory(body) {
 }
 
 // /category/id
+
+// GET
+export async function getCategory(id) {
+  const res = await makeRequest(`${apiUrl}/v1/category/${id}`, 'GET');
+  return res;
+}
+
 // PUT
 export async function editCategory(id, body) {
   const res = await makeRequest(`${apiUrl}/v1/category/${id}`, 'PUT', body);
