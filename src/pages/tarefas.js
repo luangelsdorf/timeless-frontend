@@ -5,15 +5,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Fab from '@mui/material/Fab';
+import Check from '@mui/icons-material/Check';
 import MainDialog from 'src/components/task/MainDialog';
 import CategoryItem from 'src/components/category/CategoryItem';
 import { fetchData } from 'src/util/helpers';
+import { completeTask } from 'src/handlers/tasks';
 
 export default function Tarefas() {
   const [categories, setCategories] = useState([]);
@@ -57,6 +58,10 @@ export default function Tarefas() {
     setData();
   }, [])
 
+  function complete(id) {
+    completeTask(id).then(() => reFetchData());
+  }
+
   return (
     <section className={styles.section}>
 
@@ -91,11 +96,9 @@ export default function Tarefas() {
                 >
                   <ListItemButton dense style={{ flex: 'initial' }}>
                     <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        tabIndex={-1}
-                        disableRipple
-                      />
+                      <IconButton color="secondary" onClick={() => complete(task.id)}>
+                        <Check />
+                      </IconButton>
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={task.name} />
                     <div className={styles.taskItems}>
