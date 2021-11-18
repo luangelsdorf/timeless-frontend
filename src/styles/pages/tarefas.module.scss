@@ -1,6 +1,18 @@
-/* .section {
-  
-} */
+@import "../../styles/scss/mixins";
+
+.section {
+  @include md() {
+    td:not(:last-child) {
+      padding: 0;
+    }
+
+    span {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+}
 
 .fab {
   position: fixed !important;

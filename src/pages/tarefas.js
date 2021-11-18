@@ -95,17 +95,15 @@ export default function Tarefas() {
                   return (
                     <TableRow key={`row-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell>
-                        <IconButton style={{marginRight: '12px'}} color="secondary" onClick={() => complete(task.id)}>
+                        <IconButton style={{ marginRight: '12px' }} color="secondary" onClick={() => complete(task.id)}>
                           <Check />
                         </IconButton>
                         {task.name}
                       </TableCell>
                       <TableCell>
-                        <div className={styles.taskItems}>
-                          <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
-                            {categories.find(cat => cat.id === task.categoryId).name}
-                          </CategoryItem>
-                        </div>
+                        <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
+                          {categories.find(cat => cat.id === task.categoryId).name}
+                        </CategoryItem>
                       </TableCell>
                       <TableCell align="right">
                         <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
