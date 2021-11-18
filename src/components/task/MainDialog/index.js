@@ -202,10 +202,10 @@ export default function MainDialog(props) {
               </LocalizationProvider>
             ) : (
               <div className={`${styles.pomoFields} pomodoros`}>
-                <TextField required type="number" label="Tempo de foco (minutos)" value={focusTime} onChange={e => setFocusTime(e.target.value)} />
-                <TextField required type="number" label="Pausa curta (minutos)" value={shortBreak} onChange={e => setShortBreak(e.target.value)} />
-                <TextField required type="number" label="Pausa longa (minutos)" value={longBreak} onChange={e => setLongBreak(e.target.value)} />
-                <TextField required type="number" label="Ciclos até uma pausa longa" value={cyclesUntilLongBreak} onChange={e => setCyclesUntilLongBreak(e.target.value)} />
+                <TextField required type="number" label="Tempo de foco (minutos)" value={focusTime} onChange={e => setFocusTime(e.target.valueAsNumber)} />
+                <TextField required type="number" label="Pausa curta (minutos)" value={shortBreak} onChange={e => setShortBreak(e.target.valueAsNumber)} />
+                <TextField required type="number" label="Pausa longa (minutos)" value={longBreak} onChange={e => setLongBreak(e.target.valueAsNumber)} />
+                <TextField required type="number" label="Ciclos até uma pausa longa" value={cyclesUntilLongBreak} onChange={e => setCyclesUntilLongBreak(e.target.valueAsNumber)} />
                 <TextField required type="number" label="Número de ciclos (repetições)" value={repeats} onChange={e => setRepeats(e.target.valueAsNumber)} />
 
                 <TimeLine

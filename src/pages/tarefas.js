@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from 'src/styles/pages/tarefas.module.scss';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -15,12 +10,20 @@ import MainDialog from 'src/components/task/MainDialog';
 import CategoryItem from 'src/components/category/CategoryItem';
 import { fetchData } from 'src/util/helpers';
 import { completeTask } from 'src/handlers/tasks';
+import DeleteDialog from 'src/components/category/DeleteDialog';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 export default function Tarefas() {
   const [categories, setCategories] = useState([]);
   const [tasks, setTasks] = useState([]);
   //
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isDelOpen, setIsDelOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [role, setRole] = useState('');
 
@@ -36,11 +39,13 @@ export default function Tarefas() {
   }
 
   function toggleDelete(id) {
-    setSelected(id)
+    setSelected(id);
+    setIsDelOpen(!isAddOpen);
   }
 
   function closeDialog() {
     setIsAddOpen(false);
+    setIsDelOpen(false);
   }
 
   async function reFetchData() {
@@ -73,46 +78,52 @@ export default function Tarefas() {
         handleClose={closeDialog}
         reFetchData={reFetchData}
       />
+      <DeleteDialog
+        type="task"
+        open={isDelOpen}
+        handleClose={closeDialog}
+        id={selected}
+        reFetchData={reFetchData}
+      />
 
-      <List sx={{ bgcolor: 'background.paper' }}>
-        {
-          tasks.length > 0 ? (
-            tasks.map((task, index) => {
-              const labelId = `checkbox-list-label-${index}`;;
-              return (
-                <ListItem
-                  key={`item-${index}`}
-                  secondaryAction={
-                    <div>
-                      <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
-                        <EditOutlinedIcon color="primary" />
-                      </IconButton>
-                      <IconButton edge="end">
-                        <DeleteOutlinedIcon color="primary" />
-                      </IconButton>
-                    </div>
-                  }
-                  disablePadding
-                >
-                  <ListItemButton dense style={{ flex: 'initial' }}>
-                    <ListItemIcon>
-                      <IconButton color="secondary" onClick={() => complete(task.id)}>
-                        <Check />
-                      </IconButton>
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={task.name} />
-                    <div className={styles.taskItems}>
-                      <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
-                        {categories.find(cat => cat.id === task.categoryId).name}
-                      </CategoryItem>
-                    </div>
-                  </ListItemButton>
-                </ListItem>
-              );
-            })
-          ) : null
-        }
-      </List>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {
+              tasks.length > 0 ? (
+                tasks.map((task, index) => {
+                  return (
+                    <TableRow key={`row-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell>
+                        <IconButton style={{marginRight: '12px'}} color="secondary" onClick={() => complete(task.id)}>
+                          <Check />
+                        </IconButton>
+                        {task.name}
+                      </TableCell>
+                      <TableCell>
+                        <div className={styles.taskItems}>
+                          <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
+                            {categories.find(cat => cat.id === task.categoryId).name}
+                          </CategoryItem>
+                        </div>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
+                          <EditOutlinedIcon color="primary" />
+                        </IconButton>
+                        <IconButton edge="end" onClick={() => toggleDelete(task.id)}>
+                          <DeleteOutlinedIcon color="primary" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              ) : null
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       <Fab onClick={toggleAdd} className={styles.fab} color="secondary" >
         <AddIcon />
       </Fab>

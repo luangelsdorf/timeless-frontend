@@ -66,7 +66,7 @@ export default function Categorias() {
 
         <MainDialog role="add" title="Nova categoria" open={isAddOpen} handleClose={toggleAdd} reFetchData={reFetchData} />
         <MainDialog role="edit" title="Editar categoria" data={editData} open={isEditOpen} handleClose={toggleEdit} reFetchData={reFetchData} />
-        <DeleteDialog open={isDelOpen} handleClose={toggleDelete} id={deleteId} reFetchData={reFetchData} />
+        <DeleteDialog type="cat" open={isDelOpen} handleClose={toggleDelete} id={deleteId} reFetchData={reFetchData} />
 
 
         <h1>Categorias</h1>
