@@ -56,8 +56,8 @@ export default function TimeLine({ fields }) {
     <section className={styles.section}>
       <div>
         <span>{`Tempo total: ${totalHours} hora`}</span>
-        {(totalHours) > 1 ? 's' : ''}
-        <span>{!!(totalMinutes) ? (` e ${totalMinutes} minutos`) : null}</span>
+        { totalHours > 1 ? 's' : '' }
+        <span>{totalMinutes ? (` e ${totalMinutes} minutos`) : null}</span>
       </div>
       <div className={styles.timeline}>
         <div>

@@ -1,0 +1,16 @@
+.section {
+  :global {
+    .MuiFormControl-root {
+      margin-bottom: 18px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      width: max-content;
+    }
+  }
+}

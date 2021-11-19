@@ -8,7 +8,7 @@ import Fab from '@mui/material/Fab';
 import Check from '@mui/icons-material/Check';
 import MainDialog from 'src/components/task/MainDialog';
 import CategoryItem from 'src/components/category/CategoryItem';
-import { fetchData } from 'src/util/helpers';
+import { fetchData, getDuration } from 'src/util/helpers';
 import { completeTask } from 'src/handlers/tasks';
 import DeleteDialog from 'src/components/category/DeleteDialog';
 import Table from '@mui/material/Table';
@@ -100,9 +100,12 @@ export default function Tarefas() {
                         </IconButton>
                         {task.name}
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
+                        { getDuration(task) }
+                      </TableCell> */}
+                      <TableCell align="left">
                         <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
-                          {categories.find(cat => cat.id === task.categoryId).name}
+                          { categories.find(cat => cat.id === task.categoryId).name }
                         </CategoryItem>
                       </TableCell>
                       <TableCell align="right">

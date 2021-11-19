@@ -12,7 +12,10 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Category, Logout, TaskAlt } from '@mui/icons-material';
+import Category from '@mui/icons-material/Category';
+import Logout from '@mui/icons-material/Logout';
+import TaskAlt from '@mui/icons-material/TaskAlt';
+import Assessment from '@mui/icons-material/Assessment';
 import { useRouter } from 'next/router';
 import styles from 'src/styles/pages/layout.module.scss';
 import Button from '@mui/material/Button';
@@ -49,6 +52,12 @@ function Layout(props) {
             <Category />
           </ListItemIcon>
           <ListItemText primary="Categorias" />
+        </ListItem>
+        <ListItem button onClick={() => router.push('/relatorios')}>
+          <ListItemIcon>
+            <Assessment />
+          </ListItemIcon>
+          <ListItemText primary="Relatório" />
         </ListItem>
       </List>
     </div>

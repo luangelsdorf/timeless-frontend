@@ -83,7 +83,7 @@ export default function MainDialog(props) {
     description: desc,
     priority: priority,
     categoryId: cat,
-    startTime: start.replace('Z', '-03'),
+    startTime: start,
     taskType: taskType,
   }
 
@@ -98,7 +98,7 @@ export default function MainDialog(props) {
 
   const endData = {
     ...fixedData,
-    endTime: end.replace('Z', '-03'),
+    endTime: end,
   }
 
   useEffect(() => {
