@@ -31,11 +31,11 @@ export default function MyApp(props) {
 
   const router = useRouter();
 
-  /*   useEffect(() => {
+    useEffect(() => {
       if (!window.localStorage.getItem('token')) {
         router.push('/login');
       }
-    }, []) */
+    }, [])
 
   return (
     <CacheProvider value={emotionCache}>

@@ -109,6 +109,14 @@ export default function Tarefas() {
     init();
   }, [])
 
+  function formatTime(timestamp) {
+    const time = new Date(timestamp);
+    const hours = time.getHours();
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const date = time.toLocaleDateString();
+    return `${date} - ${hours}:${minutes}`;
+  }
+
   return (
     <section className={styles.section}>
       <MainDialog
@@ -127,50 +135,52 @@ export default function Tarefas() {
         reFetchData={reFetchData}
       />
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
-            {
-              tasks.length > 0 ? (
-                tasks.map((task, index) => {
-                  return (
-                    <TableRow key={`row-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell>
-                        <IconButton style={{ marginRight: '12px' }} color="secondary" onClick={() => complete(task.id)}>
-                          <Check />
-                        </IconButton>
-                        {task.name}
-                      </TableCell>
-                      {/* <TableCell>
-                        { getDuration(task) }
-                      </TableCell> */}
-                      <TableCell align="left">
-                        <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
-                          {categories.find(cat => cat.id === task.categoryId).name}
-                        </CategoryItem>
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
-                          <EditOutlinedIcon color="primary" />
-                        </IconButton>
-                        <IconButton edge="end" onClick={() => toggleDelete(task.id)}>
-                          <DeleteOutlinedIcon color="primary" />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })
-              ) : null
-            }
-          </TableBody>
-        </Table>
+      <TableContainer component={Paper} style={{ overflow: 'hidden' }}>
+        <div style={{ width: 'auto', overflowX: 'scroll' }}>
+          <Table sx={{ minWidth: 650 }}>
+            <TableBody>
+              {
+                tasks.length > 0 ? (
+                  tasks.map((task, index) => {
+                    return (
+                      <TableRow key={`row-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell>
+                          <IconButton style={{ marginRight: '12px' }} color="secondary" onClick={() => complete(task.id)}>
+                            <Check />
+                          </IconButton>
+                          { task.name }
+                        </TableCell>
+                        <TableCell>
+                          { formatTime(task.startTime) }
+                        </TableCell>
+                        <TableCell align="left">
+                          <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
+                            {categories.find(cat => cat.id === task.categoryId).name}
+                          </CategoryItem>
+                        </TableCell>
+                        <TableCell align="right">
+                          <IconButton edge="end" onClick={() => toggleEdit(task.id)}>
+                            <EditOutlinedIcon color="primary" />
+                          </IconButton>
+                          <IconButton edge="end" onClick={() => toggleDelete(task.id)}>
+                            <DeleteOutlinedIcon color="primary" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                ) : null
+              }
+            </TableBody>
+          </Table>
+        </div>
       </TableContainer>
 
       {
-          categories.length === 0 ? (
-            <Typography color="primary" variant="h5" style={{ background: '#121212' }}>Nenhuma tarefa para mostrar...</Typography>
-          ) : null
-        }
+        categories.length === 0 ? (
+          <Typography color="primary" variant="h5" style={{ background: '#121212' }}>Nenhuma tarefa para mostrar...</Typography>
+        ) : null
+      }
 
       <Fab onClick={toggleAdd} className={styles.fab} color="secondary" >
         <AddIcon />
