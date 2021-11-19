@@ -34,11 +34,8 @@ export async function askPermission() {
   return isGranted;
 }
 
-export function getDuration(task) {
-  if (task.taskType === 'E') {
-    const minutesDiff = (task.endTime - task.startTime) / 60000;
-    const minutes = minutesDiff % 60;
-    const hours = Math.floor(minutesDiff / 60);
-    return `${hours}h ${minutes}m`;
-  }
+export function getDuration(min) {
+  const minutes = min % 60;
+  const hours = Math.floor(min / 60);
+  return `${hours}h ${minutes}m`;
 }

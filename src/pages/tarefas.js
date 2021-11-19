@@ -17,6 +17,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import 'firebase/messaging';
+import { apiUrl } from 'src/util/env';
+import { makeRequest } from 'src/util/helpers';
+import Typography from '@mui/material/Typography';
 
 export default function Tarefas() {
   const [categories, setCategories] = useState([]);
@@ -67,9 +71,46 @@ export default function Tarefas() {
     completeTask(id).then(() => reFetchData());
   }
 
+  useEffect(() => {
+    const init = async () => {
+      const asd = await import('firebase/app');
+      const firebase = asd.default;
+      const firebaseConfig = {
+        apiKey: "AIzaSyDjRuFAuLGIZ4-MnzML0sAPQQkstujuapc",
+        authDomain: "springnotifications.firebaseapp.com",
+        projectId: "springnotifications",
+        storageBucket: "springnotifications.appspot.com",
+        messagingSenderId: "762813305139",
+        appId: "1:762813305139:web:a3624e0e1583f1dbc52e46",
+        measurementId: "G-5N40PSKKG1"
+      };
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig)
+      }
+
+      const messaging = firebase.messaging();
+      const publicKey = 'BClVrKNMiGlj3KvwuDqR-cWFvs7KGOyDQexT2qNESiXZ7qeRptTpYBVDbjYSpmjyVN7CtzYvs11jOgncyRQPjvc';
+
+      async function getToken() {
+        let currentToken = '';
+        try {
+          currentToken = await messaging.getToken({ vapidKey: publicKey });
+          if (currentToken) {
+            makeRequest(`${apiUrl}/v1/messages/subscribe?token=${currentToken}`, 'POST').then(res => console.log(res));
+          }
+        } catch (error) {
+          console.log('An error occurred while retrieving token.', error);
+        }
+        return currentToken;
+      };
+      getToken();
+    }
+    init();
+  }, [])
+
   return (
     <section className={styles.section}>
-
       <MainDialog
         selected={tasks.find(task => task.id === selected)}
         categories={categories}
@@ -105,7 +146,7 @@ export default function Tarefas() {
                       </TableCell> */}
                       <TableCell align="left">
                         <CategoryItem color={categories.find(cat => cat.id === task.categoryId).color}>
-                          { categories.find(cat => cat.id === task.categoryId).name }
+                          {categories.find(cat => cat.id === task.categoryId).name}
                         </CategoryItem>
                       </TableCell>
                       <TableCell align="right">
@@ -124,6 +165,12 @@ export default function Tarefas() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {
+          categories.length === 0 ? (
+            <Typography color="primary" variant="h5" style={{ background: '#121212' }}>Nenhuma tarefa para mostrar...</Typography>
+          ) : null
+        }
 
       <Fab onClick={toggleAdd} className={styles.fab} color="secondary" >
         <AddIcon />

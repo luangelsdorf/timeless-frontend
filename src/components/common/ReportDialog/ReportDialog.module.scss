@@ -1,0 +1,23 @@
+.bar {
+  & > div {
+    background-color: #272727;
+    padding: 0 24px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  button {
+    margin-left: auto;
+  }
+}
+
+.completed {
+  color: lightgreen;
+}
+
+.incompleted {
+  color: salmon;
+}

@@ -7,12 +7,16 @@ import Button from '@mui/material/Button';
 import { fetchData, makeRequest } from 'src/util/helpers';
 import { apiUrl } from 'src/util/env';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import ReportDialog from 'src/components/common/ReportDialog';
 
 export default function Relatorios() {
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
   const [categories, setCategories] = useState([])
   const [cat, setCat] = useState('');
+  //
+  const [report, setReport] = useState([]);
+  const [open, setOpen] = useState(false);
 
   function formatDate(date) {
     return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
@@ -24,7 +28,15 @@ export default function Relatorios() {
     const endDate = formatDate(end);
 
     makeRequest(`${apiUrl}/v1/reports?startDate=${startDate}&endTime=${endDate}&category=${cat}`, 'GET')
-    .then(res => console.log(res))
+    .then(res => {
+      setReport(res);
+    });
+
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
   }
 
   useEffect(() => {
@@ -78,6 +90,8 @@ export default function Relatorios() {
 
         <Button type="submit" variant="contained">Gerar</Button>
       </form>
+
+      <ReportDialog open={open} handleClose={handleClose} report={report} />
     </section>
   )
 }

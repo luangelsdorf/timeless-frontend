@@ -23,8 +23,6 @@ import { createTask, editTask } from 'src/handlers/tasks';
 export default function MainDialog(props) {
   // fixed data
   const [name, setName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [priority, setPriority] = useState('');
   const [cat, setCat] = useState('');
   const [start, setStart] = useState(new Date().toJSON());
   const [taskType, setTaskType] = useState('P');
@@ -59,8 +57,6 @@ export default function MainDialog(props) {
 
   function close() {
     setName('');
-    setDesc('');
-    setPriority('');
     setCat('');
     setStart(new Date().toJSON());
     setEnd(new Date().toJSON());
@@ -80,8 +76,6 @@ export default function MainDialog(props) {
 
   const fixedData = {
     name: name,
-    description: desc,
-    priority: priority,
     categoryId: cat,
     startTime: start,
     taskType: taskType,
@@ -104,10 +98,8 @@ export default function MainDialog(props) {
   useEffect(() => {
     if (props.role === 'edit' && props.open) {
       const task = props.selected;
-      const { name, description, priority, categoryId, startTime, taskType } = task
+      const { name, categoryId, startTime, taskType } = task
       setName(name)
-      setDesc(description)
-      setPriority(priority)
       setCat(categoryId)
       setStart(new Date(startTime).toJSON())
       setTaskType(taskType)
@@ -146,10 +138,6 @@ export default function MainDialog(props) {
             <div className={styles.fixedFields}>
               {/* nome */}
               <TextField label="Nome" required value={name} onChange={e => setName(e.target.value)} />
-              {/* descrição */}
-              <TextField label="Descrição" required multiline value={desc} onChange={e => setDesc(e.target.value)} />
-              {/* prioridade */}
-              <TextField label="Prioridade (1 a 3)" required type="number" inputProps={{ min: '1', max: '3' }} value={priority} onChange={e => setPriority(e.target.value)} />
               {/* categoria */}
               <FormControl>
                 <InputLabel id="cat-label">Categoria</InputLabel>

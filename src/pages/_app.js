@@ -15,7 +15,6 @@ import { apiUrl } from 'src/util/env';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
-
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -37,22 +36,6 @@ export default function MyApp(props) {
         router.push('/login');
       }
     }, []) */
-
-  useEffect(() => {
-    navigator.serviceWorker.register('/worker.js')
-      .then(registration => {
-        askPermission().then(() => {
-          const options = {
-            userVisibleOnly: true,
-            applicationServerKey: 'BCP4ZdjJL9H8VKGWbjsAPmZEvh9fIkaQGYZxfchjS-WRPCKTRyKGPY0WVcr4OcoAKbzOhSFbfqZDNpeOMIPqDKI',
-          }
-          return registration.pushManager.subscribe(options);
-        }).then(pushSubscription => {
-          makeRequest(`${apiUrl}/v1/messages/subscribe`, 'POST', pushSubscription)
-            .then(res => console.log(res));
-        })
-      })
-  }, [])
 
   return (
     <CacheProvider value={emotionCache}>

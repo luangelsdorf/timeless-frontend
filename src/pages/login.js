@@ -27,7 +27,7 @@ export default function Home() {
       password: pass,
     }
 
-    handleLogin(data, router);
+    handleLogin(data, router)
   }
 
   return (
